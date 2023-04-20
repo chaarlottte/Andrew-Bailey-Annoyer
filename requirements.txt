@@ -1,5 +1,4 @@
 charlogger
-requests
 tls_client
 pysocks
 Faker

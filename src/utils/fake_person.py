@@ -5,8 +5,6 @@ import random, string
 class TotallyRealPerson():
     def __init__(self) -> None:
         self._fake = Faker()
-        while " MO " not in self._fake.address():
-            self._fake = Faker()
         self._fake.add_provider(user_agent)
 
         self.first_name = self._fake.name().split(" ")[0]

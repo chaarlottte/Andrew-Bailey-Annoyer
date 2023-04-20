@@ -1,3 +1,4 @@
 data/audio/*.wav
 test.py
 .venv/
+proxy_formatter.py

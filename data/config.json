@@ -3,7 +3,7 @@
     "proxy_file": "proxies.txt",
     "proxy_type": "http",
 
-    "debug": true,
+    "debug": false,
 
     "threads": 15,
     "wait_to_continue": true,

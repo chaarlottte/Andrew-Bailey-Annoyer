@@ -1,4 +1,4 @@
-import json, charlogger, requests, random
+import json, charlogger, requests, random, tls_client
 
 class config():
     def __init__(self) -> None:
@@ -10,18 +10,22 @@ class config():
         self.print_rants = self._config_json.get("print_rants")
         pass
 
-    def add_proxies(self, session: requests.Session) -> requests.Session:
-        if self._config_json.get("use_proxies"):
+    def get_session(self):
+        if self.use_proxies:
+            session = tls_client.Session(client_identifier="chrome_112")
+        else:
+            session = requests.Session()
+        if self.use_proxies:
             proxy_list = [x.strip() for x in open(f"data/{self._config_json.get('proxy_file')}", "r", encoding="utf8").readlines()]
 
             self.proxy = f"{self._config_json.get('proxy_type')}://{random.choice(proxy_list)}"
-            session.proxies.update({
+            session.proxies = {
                 "http": self.proxy,
                 "https": self.proxy
-            })
+            }
+            session.verify = False
         
         return session
-
 
     def get_logger(self, thread_id: int) -> charlogger.Logger:
         if thread_id == -1:

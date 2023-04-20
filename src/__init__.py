@@ -9,25 +9,23 @@ class AntiTransNarc():
     def __init__(self, thread_id: int = -1) -> None:
         self.config = config()
 
-        self.session = requests.Session()
+        self.session = self.config.get_session()
         self.logger: charlogger.Logger = self.config.get_logger(thread_id=thread_id)
         self.identity = TotallyRealPerson()
 
         self.session.headers.update({
             "User-Agent": self.identity.user_agent
         })
-
-        self.session = self.config.add_proxies(session=self.session)
         self.complaint_url = "https://ago.mo.gov/file-a-complaint/transgender-center-concerns"
-        
         pass
 
     def run(self) -> None:
-        print(self.session.get("https://checkip.amazonaws.com").text)
-        return
-        self.initial_request()
-        self.captcha = self.handle_captcha()
-        response = self.submit_form()
+        try:
+            self.initial_request()
+            self.captcha = self.handle_captcha()
+            response = self.submit_form()
+        except:
+            self.run()
 
     def submit_form(self) -> dict:
         """
@@ -38,7 +36,7 @@ class AntiTransNarc():
         """
 
         body = self.get_form_body(captcha=self.captcha)
-        resp = self.session.post(self.submit_url, data=body, files={})
+        resp = self.session.post(self.submit_url, data=body)
 
         if resp.status_code == 200:
             if "success" in resp.text.lower():
