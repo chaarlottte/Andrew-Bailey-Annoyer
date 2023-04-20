@@ -3,7 +3,7 @@ from ..utils.b64utils import b64utils
 from ..utils.string_utils import string_utils
 
 import speech_recognition as sr
-import time
+import time, os
 
 class Captcha():
     def __init__(
@@ -26,7 +26,7 @@ class Captcha():
 class mocap():
 
     def solve_audio(captcha: Captcha) -> str:
-        file_name = string_utils.random_string(6)
+        file_name = string_utils.random_string(2)
         b64utils.b64_to_wav(base64_string=captcha.audio_b64, output_file_path=f"data/audio/{file_name}.wav")
         r = sr.Recognizer()
         r.energy_threshold = 0
@@ -35,13 +35,13 @@ class mocap():
         r.phrase_threshold = 0.0
         r.pause_threshold = 0
         with sr.WavFile(f"data/audio/{file_name}.wav") as source:
-            # r.adjust_for_ambient_noise(source)
             audio = r.record(source)
 
         response = r.recognize_google(audio)
-        # print("AI response:", response)
         answer = mocap._audio_transcription_to_text(transcription=response)
-        # print("proper answer:", answer)
+
+        # Remove the file because I have 3gb of wav files now
+        os.remove(f"data/audio/{file_name}.wav")
         return answer
     
     def _audio_transcription_to_text(transcription: str) -> str:

@@ -25,6 +25,7 @@ class AntiTransNarc():
             self.captcha = self.handle_captcha()
             response = self.submit_form()
         except:
+            # recurse into oblivion lmao
             self.run()
 
     def submit_form(self) -> dict:
