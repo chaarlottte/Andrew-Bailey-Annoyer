@@ -1,0 +1,13 @@
+{
+    "use_proxies": true,
+    "proxy_file": "proxies.txt",
+    "proxy_type": "http",
+
+    "debug": true,
+
+    "threads": 15,
+    "wait_to_continue": true,
+    
+    "max_rant_size": 200,
+    "print_rants": true
+}
